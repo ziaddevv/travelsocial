@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Travel.DAL.Entities.Models
 {
-	internal class Trip_Place
+	public class Trip_Place
 	{
+		
 	}
 }

@@ -32,8 +32,8 @@ namespace Travel.DAL.Entities.Models
         public  TravelState TravelState { get; private set; }//not traverllign default
 		public string? CreatedBy { get; private set; }
 		public DateTime? CreatedOn { get; private set; }
-		public string? ModfiedBy { get; private set; }
-		public DateTime? ModfiedOn { get; private set; }
+		public string? ModifiedBy { get; private set; }
+		public DateTime? ModifiedOn { get; private set; }
 		public DateTime? DeletedOn { get; private set; }
 
 		public bool IsDeleted { get; private set; }
