@@ -1,12 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Travel.DAL.Entities.Models
 {
-	internal class Like
-	{
-	}
+    public class Like
+    {
+        [ForeignKey("User")]
+
+        public int UserId { get; private set; }
+        public User User { get; private set; }
+
+        [ForeignKey("Post")]
+        public int PostId { get; private set; }
+        public Post Post { get; private set; }
+        public Like(int userId, int postId)
+        {
+            UserId = userId;
+            PostId = postId;
+        }
+    }
 }
