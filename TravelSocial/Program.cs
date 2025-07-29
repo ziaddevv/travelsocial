@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+using Travel.DAL.DataBase;
+
 namespace TravelSocial
 {
 	public class Program
@@ -8,6 +11,7 @@ namespace TravelSocial
 
 			// Add services to the container.
 			builder.Services.AddControllersWithViews();
+			builder.Services.AddDbContext<ApplicationDbContext>(options =>options.UseSqlServer(builder.Configuration.GetConnectionString("Default")));
 
 			var app = builder.Build();
 

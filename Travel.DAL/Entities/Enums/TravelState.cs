@@ -8,8 +8,9 @@ namespace Travel.DAL.Entities.Enums
 {
 	public enum TravelState
 	{
+		NotTravelling,
 		Planning,
 		Travelling,
-		NotTravelling
+		Completed
 	}
 }

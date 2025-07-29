@@ -9,10 +9,13 @@ namespace Travel.DAL.Entities.Enums
 	public enum PlaceType
 	{
 		Restaurant,
-		Attraction,
 		Hotel,
-	    Beach,
-		General
+		Attraction,
+		Museum,
+		Beach,
+		Mountain,
+		Park,
+		Other
 
 	}
 }

@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="DataBase\" />
     <Folder Include="Repositories\Abstractions\" />
     <Folder Include="Repositories\Implementations\" />
   </ItemGroup>
