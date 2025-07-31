@@ -8,9 +8,9 @@ using Travel.DAL.Entities.Enums;
 
 namespace Travel.DAL.Entities.Models
 {
-	public class GroupMembership
-	{
-		public GroupMembership() { }
+    public class GroupMembership : AuditableEntity
+    {
+        public GroupMembership() { }
 
 		public GroupMembership(int userId, int groupId, GroupRole role = GroupRole.Member)
 		{

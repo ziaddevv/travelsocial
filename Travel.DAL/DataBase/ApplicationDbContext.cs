@@ -5,7 +5,7 @@ namespace Travel.DAL.DataBase
 {
 	public class ApplicationDbContext : DbContext
 	{
-		public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
+		public ApplicationDbContext() 
 		{
 		}
 
@@ -91,11 +91,11 @@ namespace Travel.DAL.DataBase
 				.OnDelete(DeleteBehavior.Cascade);
 
 
-			modelBuilder.Entity<Group>()
-	  .HasOne(g => g.User)   
-	  .WithMany(u => u.CreatedGroups)  
-	  .HasForeignKey(g => g.CreatorId)  
-	  .OnDelete(DeleteBehavior.Restrict);
+					modelBuilder.Entity<Group>()
+			  .HasOne(g => g.User)   
+			  .WithMany(u => u.CreatedGroups)  
+			  .HasForeignKey(g => g.CreatorId)  
+			  .OnDelete(DeleteBehavior.Restrict);
 
 
 
