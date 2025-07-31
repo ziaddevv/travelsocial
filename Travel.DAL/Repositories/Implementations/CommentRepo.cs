@@ -1,4 +1,5 @@
-﻿using Travel.DAL.DataBase;
+﻿using Microsoft.EntityFrameworkCore;
+using Travel.DAL.DataBase;
 using Travel.DAL.Entities.Models;
 using Travel.DAL.Repositories.Abstractions;
 
@@ -11,14 +12,14 @@ namespace Travel.DAL.Repositories.Implementations
         {
             this.db = db;
         }
-        public (bool, string?) CreateComment(Comment comment)
+        public async Task<(bool, string?)> CreateComment(Comment comment)
         {
             try
             {
-                db.Comments.Add(comment);
+                await db.Comments.AddAsync(comment);
                 //put in this user name from Auth. 
-                comment.SetCreatedBy("SalmaCreated");
-                db.SaveChanges();
+                 comment.SetCreatedBy("SalmaCreated");
+                await db.SaveChangesAsync();
                 return (true, null);
 
             }
@@ -27,15 +28,15 @@ namespace Travel.DAL.Repositories.Implementations
             }
         }
 
-        public (bool, string?) DeleteComment(int postId,int userId)
+        public async Task<(bool, string?)> DeleteComment(int postId,int userId)
         {
             try
             {
-                var comment = db.Comments.Where(a => a.PostId == postId && a.UserId==userId&& !a.IsDeleted).FirstOrDefault();
+                var comment =await db.Comments.Where(a => a.PostId == postId && a.UserId==userId&& !a.IsDeleted).FirstOrDefaultAsync();
                 if (comment == null)
                     return (false, "error no comment is found to delete ");
                 comment.SetDeleted();
-                db.SaveChanges();
+               await db.SaveChangesAsync();
                 return (true, null);
             }
             catch (Exception ex)
@@ -44,18 +45,18 @@ namespace Travel.DAL.Repositories.Implementations
             }
         }
 
-        public (bool, string?) EditComment(Comment comment)
+        public async Task<(bool, string?)> EditComment(Comment comment)
         {
             try
             {
-                var comm = db.Comments.FirstOrDefault(a => a.PostId == comment.PostId);
+                var comm =await db.Comments.FirstOrDefaultAsync(a => a.PostId == comment.PostId);
                 if (comm == null)
                     return (false, " this comment no found to edit this");
                 if (comm.User.UserId == comment.UserId)
                 {
                     comm.UpdateText(comment.Text);
                     comm.SetModified("UserNameModified");
-                    db.SaveChanges();
+                    await db.SaveChangesAsync();
                     return (true, null);
                 }
                 else
@@ -67,11 +68,11 @@ namespace Travel.DAL.Repositories.Implementations
             }
         }
 
-        public List<Comment> GetAllComments()
+        public async Task< List<Comment>> GetAllComments()
         {
             try
             {
-                var comments = db.Comments.Where(a => a.IsDeleted == false).ToList();
+                var comments =await db.Comments.Where(a => a.IsDeleted == false).ToListAsync();
                 return comments;
             }
             catch (Exception ex) { throw; }

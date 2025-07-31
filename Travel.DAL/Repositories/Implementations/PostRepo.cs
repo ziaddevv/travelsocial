@@ -13,21 +13,21 @@ namespace Travel.DAL.Repositories.Implementations
         {
             this.db = db;
         }
-        public (bool, string?) CreatePost(Post post)
+        public async Task<(bool, string?)> CreatePostAsync(Post post)
         {
-            db.Posts.Add(post);
-            db.SaveChanges();
+           await db.Posts.AddAsync(post);
+            await db.SaveChangesAsync();
             return(true, null);
         }
 
-        public (bool, string?) DeletePost(int postId)
+        public async Task< (bool, string?) >DeletePost(int postId)
         {
             try
             {
-                var post = db.Posts
+                var post =await db.Posts
                      .Include(p => p.Comments)
                      .Include(p => p.Likes)
-                     .FirstOrDefault(p => p.PostId == postId);
+                     .FirstOrDefaultAsync(p => p.PostId == postId);
 
                 if (post == null)
                     return (false, "Post not found.");
@@ -45,7 +45,7 @@ namespace Travel.DAL.Repositories.Implementations
                     like.DeleteLike();
                     
                 }
-                db.SaveChanges();
+               await db.SaveChangesAsync();
 
                 return (true, null);
             }
@@ -56,11 +56,11 @@ namespace Travel.DAL.Repositories.Implementations
         }
 
 
-        public (bool, string?) EditPost(Post post)
+        public async Task< (bool, string?) >EditPost(Post post)
         {
             try
             {
-                var postToEdit = db.Posts.FirstOrDefault(p => p.PostId == post.PostId);
+                var postToEdit =await db.Posts.FirstOrDefaultAsync(p => p.PostId == post.PostId);
 
                 if (postToEdit == null)
                     return (false, "Post not found.");
@@ -72,7 +72,7 @@ namespace Travel.DAL.Repositories.Implementations
                     return (false, "You are not authorized to edit this post.");
 
                 postToEdit.UpdateContent(post.ContentText, post.Location);
-                db.SaveChanges();
+                await db.SaveChangesAsync();
 
                 return (true, null);
             }
@@ -83,17 +83,17 @@ namespace Travel.DAL.Repositories.Implementations
         }
 
 
-        public List<Post> GetAllPosts()
+        public async Task< List<Post>> GetAllPosts()
         {
             try
             {
-                var posts = db.Posts
+                var posts =await db.Posts
                     .Where(p => !p.IsDeleted)
                     .Include(p => p.User)
                     .Include(p => p.Photos)
                     .Include(p => p.Comments.Where(c => !c.IsDeleted))
                     .Include(p => p.Likes.Where(l => !l.IsDeleted))
-                    .ToList();
+                    .ToListAsync();
 
                 return posts;
             }
@@ -104,16 +104,16 @@ namespace Travel.DAL.Repositories.Implementations
         }
 
 
-        public Post? GetByIdPost(int postId)
+        public async Task< Post?> GetByIdPost(int postId)
         {
             try
             {
-                var post = db.Posts
+                var post =await db.Posts
                              .Include(p => p.User)
                              .Include(p => p.Photos)
                              .Include(p => p.Comments.Where(c => !c.IsDeleted))
                              .Include(p => p.Likes.Where(l => !l.IsDeleted))
-                             .FirstOrDefault(p => p.PostId == postId && !p.IsDeleted);
+                             .FirstOrDefaultAsync(p => p.PostId == postId && !p.IsDeleted);
                 return post;
             }
             catch (Exception ex)
