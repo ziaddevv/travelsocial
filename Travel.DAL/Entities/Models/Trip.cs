@@ -8,10 +8,10 @@ using Travel.DAL.Entities.Enums;
 
 namespace Travel.DAL.Entities.Models
 {
-	public class Trip
+	public class Trip : AuditableEntity
 	{
         public Trip(string title, string description, double totalCost, DateTime start, DateTime end,
-                TransportationMethod transportation = TransportationMethod.Bus, string? createdBy=null)
+                TransportationMethod transportation = TransportationMethod.Bus)
         {
             Title = title;
             Description = description;
@@ -19,11 +19,20 @@ namespace Travel.DAL.Entities.Models
             Start = start;
             End = end;
             Transportation = transportation;
-            CreatedAt = DateTime.Now;
             IsCompleted = false;
-            CreatedBy = createdBy;
         }
 
+
+        public void UpdateTrip(bool isCompleted,string title, string description, double totalCost, DateTime start, DateTime end, TransportationMethod transportationMethod)
+        {
+            this.IsCompleted = isCompleted;
+            this.Title = title;
+            this.Description = description;
+            this.TotalCost = totalCost;
+            this.Start = start;
+            this.End = end;
+            this.Transportation = transportationMethod;
+        }
         public int Id { get; private set; }
         public string Title { get; private set; }
         public string Description { get; private set; }
@@ -33,12 +42,8 @@ namespace Travel.DAL.Entities.Models
         public DateTime End { get; private set; }
 
         public TransportationMethod Transportation { get; private set; }
-
-        public DateTime CreatedAt { get; private set; }
         public bool IsCompleted { get; private set; }
 
-        public string? CreatedBy { get; private set; }
-
-        public ICollection<Place> Places { get; private set; } = new List<Place>();
+        public ICollection<Place> Places { get; private set; } = new List<Place>(); // Collection Navigation	
     }
 }
