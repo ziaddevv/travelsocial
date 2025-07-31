@@ -11,7 +11,9 @@ namespace Travel.DAL.Entities.Enums
 	{
 		Like,
 		Comment,
-	    Follow,
-		Message
+		Follow,
+		GroupInvite,
+		TripShare,
+		Other
 	}
 }

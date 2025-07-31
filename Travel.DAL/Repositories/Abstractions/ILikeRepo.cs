@@ -4,9 +4,10 @@ namespace Travel.DAL.Repositories.Abstractions
 {
     public interface ILikeRepo
     {
-        (bool, string?) CreateLike(Like like);
-        List<Like> GetAllLikes();
-        (bool, string?) DeleteLike(int id);
-        
+        Task<(bool, string?)> CreateLike(Like like);
+        Task<List<Like>> GetAllLikes();
+        Task<(bool, string?)> DeleteLike(int postId, int userId);
+
+
     }
 }

@@ -4,12 +4,12 @@ namespace Travel.DAL.Repositories.Abstractions
 {
     public interface IPostRepo
     {
-        (bool, string?) CreatePost(Post post);
+        Task<(bool, string?)> CreatePostAsync(Post post);
         //not sure must post having getbyidpost &&getallposts
-        Post? GetByIdPost(int id);
+        Task<Post?> GetByIdPost(int postId);
 
-        List<Post> GetAllPosts();
-        (bool, string?) DeletePost(int id);
-        (bool, string?) EditPost(Post post);
+        Task<List<Post>> GetAllPosts();
+        Task<(bool, string?)> DeletePost(int postId);
+        Task<(bool, string?)> EditPost(Post post);
     }
 }

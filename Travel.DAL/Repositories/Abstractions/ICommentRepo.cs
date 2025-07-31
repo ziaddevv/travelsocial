@@ -4,10 +4,10 @@ namespace Travel.DAL.Repositories.Abstractions
 {
     public interface ICommentRepo
     {
-        (bool, string?) CreateComment(Comment comment);
-        Comment? GetByIdComment(int id);
-        List<Comment> GetAllComments();
-        (bool, string?) DeleteComment(int id);
-        (bool, string?) EditComment(Comment comment);
+        Task<(bool, string?)> CreateComment(Comment comment);
+        //Comment? GetByIdComment(int id);
+        Task<List<Comment>> GetAllComments();
+        Task<(bool, string?)> DeleteComment(int postId, int userId);
+        Task<(bool, string?)> EditComment(Comment comment);
     }
 }

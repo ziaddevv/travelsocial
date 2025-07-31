@@ -16,6 +16,7 @@ namespace TravelSocial.Controllers
 
 		public IActionResult Index()
 		{
+			 
 			return View();
 		}
 

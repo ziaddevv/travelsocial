@@ -6,8 +6,8 @@ namespace Travel.DAL.Repositories.Implementations
 {
     public class CommentRepo : ICommentRepo
     {
-        private readonly TravelStateDbContext db;
-        public CommentRepo(TravelStateDbContext db)
+        private readonly ApplicationDbContext db;
+        public CommentRepo(ApplicationDbContext db)
         {
             this.db = db;
         }
@@ -15,7 +15,9 @@ namespace Travel.DAL.Repositories.Implementations
         {
             try
             {
-                db.comments.Add(comment);
+                db.Comments.Add(comment);
+                //put in this user name from Auth. 
+                comment.SetCreatedBy("SalmaCreated");
                 db.SaveChanges();
                 return (true, null);
 
@@ -25,14 +27,14 @@ namespace Travel.DAL.Repositories.Implementations
             }
         }
 
-        public (bool, string?) DeleteComment(int id)
+        public (bool, string?) DeleteComment(int postId,int userId)
         {
             try
             {
-                var comment = db.comments.Where(a => a.PostId == id).FirstOrDefault();
+                var comment = db.Comments.Where(a => a.PostId == postId && a.UserId==userId&& !a.IsDeleted).FirstOrDefault();
                 if (comment == null)
-                    return (false, "error no found ");
-                comment.DeleteComment();
+                    return (false, "error no comment is found to delete ");
+                comment.SetDeleted();
                 db.SaveChanges();
                 return (true, null);
             }
@@ -46,13 +48,18 @@ namespace Travel.DAL.Repositories.Implementations
         {
             try
             {
-                var comm = db.comments.FirstOrDefault(a => a.PostId == comment.PostId);
+                var comm = db.Comments.FirstOrDefault(a => a.PostId == comment.PostId);
                 if (comm == null)
-                    return (false, " not found");
-                //change after insteadof salma to userName 
-                comm.UpdateComment(comment.Text,"salma Ramadan " );
-                db.SaveChanges();
-                return (true, null);
+                    return (false, " this comment no found to edit this");
+                if (comm.User.UserId == comment.UserId)
+                {
+                    comm.UpdateText(comment.Text);
+                    comm.SetModified("UserNameModified");
+                    db.SaveChanges();
+                    return (true, null);
+                }
+                else
+                    return (false, "this user can't edit in this comment ");
             }
             catch (Exception ex)
             {
@@ -64,25 +71,25 @@ namespace Travel.DAL.Repositories.Implementations
         {
             try
             {
-                var comments = db.comments.Where(a => a.IsDeleted == false).ToList();
+                var comments = db.Comments.Where(a => a.IsDeleted == false).ToList();
                 return comments;
             }
             catch (Exception ex) { throw; }
         }
 
-        public Comment? GetByIdComment(int id)
-        {
-            try
-            {
-                var comment = db.comments.Where(a => a.PostId == id).FirstOrDefault();
-                if (comment == null)
-                    return null;
-                return comment;
-            }
-            catch (Exception ex)
-            {
-                return null;
-            }
-        }
+        //public Comment? GetByIdComment(int id)
+        //{
+        //    try
+        //    {
+        //        var comment = db.Comments.Where(a => a.PostId == id).FirstOrDefault();
+        //        if (comment == null)
+        //            return null;
+        //        return comment;
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return null;
+        //    }
+        //}
     }
 }
